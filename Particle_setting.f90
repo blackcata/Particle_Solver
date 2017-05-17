@@ -17,10 +17,10 @@
 
             INTEGER :: it
             REAL(KIND=8) :: X_start, X_end, Y_start, Y_end, Z_start, Z_end,     &
-                            time_sta, time_end, tmp(1:3)
+                            time_sta, time_end, tmp(1:3), Y_tmp
 
             WRITE(*,*) '----------------------------------------------------'
-            WRITE(*,*) '            EDDY SETTING PROCESS STARTED            '
+            WRITE(*,*) '          PARTICLE SETTING PROCESS STARTED          '
             CALL CPU_TIME(time_sta)
 
 
@@ -39,12 +39,15 @@
               particles(it)%X_pos = X_start + (X_end-X_start)*tmp(1)
               particles(it)%Y_pos = Y_start + (Y_end-Y_start)*tmp(2)
               particles(it)%Z_pos = Z_start + (Z_end-Z_start)*tmp(3)
+
+              Y_tmp               = particles(it)%Y_pos
+              particles(it)%X_vel = Y_tmp * ( x2(Ny)- Y_tmp )
             END DO
 
             CALL CPU_TIME(time_end)
 
-            WRITE(*,*) '        EDDY SETTING PROCESS IS COMPLETED           '
-            WRITE(*,*) '  Total Reading time : ',time_end - time_sta,' s'
+            WRITE(*,*) '       PARTICLE SETTING PROCESS IS COMPLETED        '
+            WRITE(*,*) '  Total Setting time : ',time_end - time_sta,' s'
             WRITE(*,*) '----------------------------------------------------'
             WRITE(*,*) ''
         END SUBROUTINE PARTICLE_SETTING

@@ -20,6 +20,7 @@
           Nx = 128
           Ny = 191
           Nz = 159
+          Nlast = 100
 
           Lx = 4.*PI
           Lz = 2.*PI
@@ -41,8 +42,8 @@
           !                         Initial Conditions                       !
           !------------------------------------------------------------------!
           x1(0:Nx) = 0.0 ; x2(0:Ny) = 0.0 ; x3(0:Nz) = 0.0
-          U(0:3,0:Nx,0:Ny,0:Nz) = 0.0
-
+          U(1:3,0:Nx,0:Ny,0:Nz) = 0.0
+          
           particles(1:N_par)%par_num = 0
           particles(1:N_par)%X_pos   = 0.
           particles(1:N_par)%Y_pos   = 0.
