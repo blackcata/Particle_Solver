@@ -3,7 +3,7 @@ FCFLAGS=-O3 -qopenmp
 
 TARGET= Particle
 OBJECT= Particle_module.o Particle_main.o Particle_setup.o Particle_solver.o    \
-				Particle_read.o
+				Particle_read.o Particle_setting.o 
 
 all : $(TARGET)
 $(TARGET) : $(OBJECT)

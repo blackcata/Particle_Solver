@@ -33,12 +33,14 @@
           !------------------------------------------------------------------!
           !                         Allocate variables                       !
           !------------------------------------------------------------------!
+          ALLOCATE ( x1(0:Nx), x2(0:Ny), x3(0:Nz) )
           ALLOCATE ( U(3,0:Nx,0:Ny,0:Nz) )
           ALLOCATE ( particles(1:N_par) )
 
           !------------------------------------------------------------------!
           !                         Initial Conditions                       !
           !------------------------------------------------------------------!
+          x1(0:Nx) = 0.0 ; x2(0:Ny) = 0.0 ; x3(0:Nz) = 0.0
           U(0:3,0:Nx,0:Ny,0:Nz) = 0.0
 
           particles(1:N_par)%par_num = 0
@@ -48,7 +50,5 @@
           particles(1:N_par)%X_vel   = 0.
           particles(1:N_par)%Y_vel   = 0.
           particles(1:N_par)%Z_vel   = 0.
-
-          CALL READ_DNS
 
         END SUBROUTINE SETUP
