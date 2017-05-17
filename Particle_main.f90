@@ -16,4 +16,6 @@
           CALL READ_DNS
           CALL PARTICLE_SETTING
 
+          CALL SOLVER
+
         END PROGRAM Particle_main

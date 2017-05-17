@@ -5,7 +5,7 @@
 !   PURPOSE : Setup each particles characteristic including, particle number   !
 !             positions and velocities of each directions.                     !
 !                                                                              !
-!                                                             2017.03.03 K.Noh !
+!                                                             2017.05.17 K.Noh !
 !                                                                              !
 !------------------------------------------------------------------------------!
 

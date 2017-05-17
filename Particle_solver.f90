@@ -9,5 +9,15 @@
 !------------------------------------------------------------------------------!
 
         SUBROUTINE SOLVER
+          USE particle
+          USE numerical
 
+          IMPLICIT NONE
+
+          INTEGER :: it
+
+          DO it = 1,N_par
+
+          END DO
+          
         END SUBROUTINE SOLVER
