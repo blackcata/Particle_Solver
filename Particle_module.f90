@@ -6,6 +6,11 @@
 !                                                                              !
 !                                                             2017.05.16 K.Noh !
 !                                                                              !
+!   VARIABLES :                                                                !
+!               N_par  : The number of particles                               !
+!               RK_ord : Order of Runge-Kutta Method                           !
+!               BC     : Boundary condition of particles                       !
+!                                                                              !
 !------------------------------------------------------------------------------!
 
 
@@ -15,7 +20,9 @@
           REAL(KIND=8) :: time_accu
           REAL(KIND=8) :: vper
           REAL(KIND=8), PARAMETER :: PI=ACOS(-1.0)
-          REAL(KIND=8), PARAMETER :: g = 9.81
+          REAL(KIND=8), PARAMETER :: g = 9.81       ! Add by K.Noh 2017
+          REAL(KIND=8), PARAMETER :: e = 1.         ! Add by K.Noh 2017
+          REAL(KIND=8), PARAMETER :: tau_p = 1.0    ! Add by K.Noh 2017
         END MODULE physical
 
         MODULE mesh
@@ -30,11 +37,35 @@
                                                 jpa, jma, jmu, jmv
         END MODULE mesh
 
-        MODULE particles
+        MODULE numerical
+          IMPLICIT none
+          INTEGER      :: Ninit, Nlast, Ntime
+          REAL(KIND=8) :: NxzM
+          REAL(KIND=8) :: dt
+          REAL(KIND=8) :: IDtopt, CFL_std, CFL_max
+          REAL(KIND=8) :: Re
+          REAL(KIND=8) :: Fr                        ! Add by K.Noh 2017
+          REAL(KIND=8) :: divU_max
+        END MODULE numerical
+
+        MODULE field
+          IMPLICIT NONE
+          INTEGER :: Nread
+          REAL(KIND=8), ALLOCATABLE, DIMENSION(:,:,:,:) :: U, UH
+          REAL(KIND=8), ALLOCATABLE, DIMENSION(:,:,:) :: P, dP
+          REAL(KIND=8) :: PRESGx, PRESGz
+          REAL(KIND=8) :: FRx, FRz
+        END MODULE field
+
+        MODULE particle
+          INTEGER :: N_par, RK_ord, BC
+
           TYPE particle_type
             INTEGER :: par_num                     ! Particles number
             REAL(KIND=8) :: X_pos, Y_pos, Z_pos, & ! Particles position
                             X_vel, Y_vel, Z_vel    ! Particles velocities
           END TYPE particle_type
 
-        END MODULE particles
+          TYPE(particle_type), ALLOCATABLE, DIMENSION(:) :: particles
+
+        END MODULE particle
