@@ -10,4 +10,9 @@
 
         PROGRAM Particle_main
 
+          IMPLICIT NONE
+
+          CALL SETUP
+          CALL READ_DNS
+          
         END PROGRAM Particle_main

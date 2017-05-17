@@ -2,7 +2,8 @@ F90=ifort
 FCFLAGS=-O3 -qopenmp
 
 TARGET= Particle
-OBJECT= Particle_module.o Particle_main.o Particle_setup.o Particle_solver.o
+OBJECT= Particle_module.o Particle_main.o Particle_setup.o Particle_solver.o    \
+				Particle_read.o
 
 all : $(TARGET)
 $(TARGET) : $(OBJECT)
@@ -16,4 +17,4 @@ $(TARGET) : $(OBJECT)
 clean :
 	rm -f *.o
 	rm -f *.mod
-	rm Particle 
+	rm Particle

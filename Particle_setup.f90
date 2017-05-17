@@ -17,9 +17,9 @@
 
           IMPLICIT NONE
 
-          Nx = 193
-          Ny = 129
-          Nz = 161
+          Nx = 128
+          Ny = 191
+          Nz = 159
 
           Lx = 4.*PI
           Lz = 2.*PI
@@ -48,5 +48,7 @@
           particles(1:N_par)%X_vel   = 0.
           particles(1:N_par)%Y_vel   = 0.
           particles(1:N_par)%Z_vel   = 0.
+
+          CALL READ_DNS
 
         END SUBROUTINE SETUP

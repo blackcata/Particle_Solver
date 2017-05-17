@@ -67,5 +67,14 @@
           END TYPE particle_type
 
           TYPE(particle_type), ALLOCATABLE, DIMENSION(:) :: particles
-
         END MODULE particle
+
+        MODULE fileout
+          IMPLICIT none
+          INTEGER :: Nfile, IDins
+          INTEGER :: Nx1,Nx2,Nx3,Nx4
+          INTEGER :: Ny1,Ny2,Ny3,Ny4
+          INTEGER :: Nz1,Nz2,Nz3,Nz4
+          INTEGER :: pathID, mkdirID
+          CHARACTER(LEN=80) :: path, pathname, filename, dirname
+        END MODULE fileout
