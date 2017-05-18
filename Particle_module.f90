@@ -76,11 +76,25 @@
               IMPLICIT NONE
               INTEGER,INTENT(IN) :: it
               INTEGER :: index_x, index_y, index_z
+              REAL(KIND=8) :: x_dis_l,x_dis_r, y_dis_d,y_dis_u, z_dis_l,z_dis_r,&
+                              y_tmp_d, y_tmp_u
 
               index_x = INT(particles(it)%X_pos/dx)
               index_z = INT(particles(it)%Z_pos/dz)
               index_y = INT( Ny/2*(1 -                                          &
                          atanh((1-particles(it)%Y_pos)*tanh(gamma))/gamma) + 1 )
+
+              x_dis_l = ( particles(it)%X_pos - index_x*dx )/dx
+              x_dis_r = ( (index_x+1)*dx - particles(it)%X_pos )/dx
+
+              z_dis_l = ( particles(it)%Z_pos - index_z*dz )/dz
+              z_dis_r = ( (index_z+1)*dz - particles(it)%Z_pos )/dz
+
+              y_tmp_d   = 1 - tanh(gamma*(1-2*REAL(index_y-1)/Ny))/tanh(gamma)
+              y_tmp_u   = 1 - tanh(gamma*(1-2*REAL(index_y+1-1)/Ny))/tanh(gamma)
+
+              y_dis_d = ( particles(it)%Y_pos - y_tmp_d )/( y_tmp_u - y_tmp_d )
+              y_dis_u = ( y_tmp_u - particles(it)%Y_pos )/( y_tmp_u - y_tmp_d )
 
             END SUBROUTINE VEL_INTERPOLATION
         END MODULE particle
