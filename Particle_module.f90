@@ -72,29 +72,56 @@
           CONTAINS
             SUBROUTINE VEL_INTERPOLATION(it)
               USE mesh
+              USE field
 
               IMPLICIT NONE
               INTEGER,INTENT(IN) :: it
-              INTEGER :: index_x, index_y, index_z
-              REAL(KIND=8) :: x_dis_l,x_dis_r, y_dis_d,y_dis_u, z_dis_l,z_dis_r,&
-                              y_tmp_d, y_tmp_u
+              INTEGER :: index_x, index_y, index_z, t_tmp, i,j,k, ind
+              REAL(KIND=8) :: x_dis_f,x_dis_b, y_dis_d,y_dis_u, z_dis_l,z_dis_r,&
+                              y_tmp_d, y_tmp_u, u_loc(1:8), u_tmp(1:6)
 
               index_x = INT(particles(it)%X_pos/dx)
               index_z = INT(particles(it)%Z_pos/dz)
               index_y = INT( Ny/2*(1 -                                          &
                          atanh((1-particles(it)%Y_pos)*tanh(gamma))/gamma) + 1 )
 
-              x_dis_l = ( particles(it)%X_pos - index_x*dx )/dx
-              x_dis_r = ( (index_x+1)*dx - particles(it)%X_pos )/dx
+              x_dis_b = ( particles(it)%X_pos - index_x*dx )/dx
+              x_dis_f = ( (index_x+1)*dx - particles(it)%X_pos )/dx
 
-              z_dis_l = ( particles(it)%Z_pos - index_z*dz )/dz
-              z_dis_r = ( (index_z+1)*dz - particles(it)%Z_pos )/dz
+              z_dis_r = ( particles(it)%Z_pos - index_z*dz )/dz
+              z_dis_l = ( (index_z+1)*dz - particles(it)%Z_pos )/dz
 
               y_tmp_d   = 1 - tanh(gamma*(1-2*REAL(index_y-1)/Ny))/tanh(gamma)
               y_tmp_u   = 1 - tanh(gamma*(1-2*REAL(index_y+1-1)/Ny))/tanh(gamma)
 
               y_dis_d = ( particles(it)%Y_pos - y_tmp_d )/( y_tmp_u - y_tmp_d )
               y_dis_u = ( y_tmp_u - particles(it)%Y_pos )/( y_tmp_u - y_tmp_d )
+
+              interpol_vel(1:3) = 0.
+
+              DO t_tmp = 1,3
+                ind = 0
+                DO k = 0,1
+                  Do j = 0,1
+                    DO i = 0,1
+                      ind = ind + 1
+                      u_loc(ind) = U(t_tmp,index_x+i,index_y+j,index_z+k)
+                    END DO
+                  END DO
+                END DO
+
+                u_tmp(1) = x_dis_f * u_loc(1) + x_dis_b * u_loc(2)
+                u_tmp(2) = x_dis_f * u_loc(3) + x_dis_b * u_loc(4)
+                u_tmp(3) = x_dis_f * u_loc(5) + x_dis_b * u_loc(6)
+                u_tmp(4) = x_dis_f * u_loc(7) + x_dis_b * u_loc(8)
+
+                u_tmp(5) = z_dis_r * u_tmp(1) + z_dis_l * u_tmp(2)
+                u_tmp(6) = z_dis_r * u_tmp(3) + z_dis_l * u_tmp(4)
+
+                interpol_vel(t_tmp) = y_dis_u*u_tmp(5) + y_dis_d*u_tmp(6)
+              END DO
+
+              print*, index_y,interpol_vel(1)
 
             END SUBROUTINE VEL_INTERPOLATION
         END MODULE particle
