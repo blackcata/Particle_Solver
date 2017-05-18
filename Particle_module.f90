@@ -78,7 +78,9 @@
               INTEGER :: index_x, index_y, index_z
 
               index_x = INT(particles(it)%X_pos/dx)
-              index_z = INT(particles(it)%Z_pos/dz)              
+              index_z = INT(particles(it)%Z_pos/dz)
+              index_y = INT( Ny/2*(1 -                                          &
+                         atanh((1-particles(it)%Y_pos)*tanh(gamma))/gamma) + 1 )
 
             END SUBROUTINE VEL_INTERPOLATION
         END MODULE particle
