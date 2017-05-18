@@ -17,14 +17,16 @@
 
           IMPLICIT NONE
 
-          Nx = 128
-          Ny = 191
-          Nz = 159
+          Nx = 127
+          Ny = 190
+          Nz = 158
           Nlast = 100
 
           Lx = 4.*PI
           Lz = 2.*PI
 
+          dx = Lx / (Nx+1)
+          dz = Lz / (Nz+1)
           dt = 0.005
 
           N_par  = 100

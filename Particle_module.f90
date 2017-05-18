@@ -59,6 +59,7 @@
 
         MODULE particle
           INTEGER :: N_par, RK_ord, BC
+          REAL(KIND=8) :: interpol_vel(1:3)
 
           TYPE particle_type
             INTEGER :: par_num                     ! Particles number
@@ -67,6 +68,19 @@
           END TYPE particle_type
 
           TYPE(particle_type), ALLOCATABLE, DIMENSION(:) :: particles
+
+          CONTAINS
+            SUBROUTINE VEL_INTERPOLATION(it)
+              USE mesh
+
+              IMPLICIT NONE
+              INTEGER,INTENT(IN) :: it
+              INTEGER :: index_x, index_y, index_z
+
+              index_x = INT(particles(it)%X_pos/dx)
+              index_z = INT(particles(it)%Z_pos/dz)              
+
+            END SUBROUTINE VEL_INTERPOLATION
         END MODULE particle
 
         MODULE fileout
