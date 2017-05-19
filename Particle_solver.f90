@@ -15,9 +15,13 @@
           IMPLICIT NONE
 
           INTEGER :: it
-          REAL(KIND=8) :: TMP
+          REAL(KIND=8) :: TMP, time_sta, time_end
 
           TMP = 0.0
+
+          WRITE(*,*) '----------------------------------------------------'
+          WRITE(*,*) '      PARTICLE TIME INTERATION PROCESS STARTED      '
+          CALL CPU_TIME(time_sta)
 
           DO it = 1,N_par
             CALL VEL_INTERPOLATION(it)
@@ -41,5 +45,11 @@
             CALL RUNGE_KUTTA(PAR_POS,                                           &
                                     particles(it)%Z_vel,TMP,particles(it)%Z_pos)
           END DO
+
+          CALL CPU_TIME(time_end)
+          WRITE(*,*) '       PARTICLE TIME INTERATION PROCESS ENDED       '
+          WRITE(*,*) '  Total Reading time : ',time_end - time_sta,' s'
+          WRITE(*,*) '----------------------------------------------------'
+          WRITE(*,*) ''
 
         END SUBROUTINE SOLVER
