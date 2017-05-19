@@ -70,6 +70,9 @@
           TYPE(particle_type), ALLOCATABLE, DIMENSION(:) :: particles
 
           CONTAINS
+          !--------------------------------------------------------------------!
+          !                 Velocity Interpolation  Subroutine                 !
+          !--------------------------------------------------------------------!
             SUBROUTINE VEL_INTERPOLATION(it)
               USE mesh
               USE field
@@ -132,47 +135,47 @@
 
             END SUBROUTINE VEL_INTERPOLATION
 
-            SUBROUTINE RUNGE_KUTTA_VEL(it)
-              USE physical
-              USE numerical
+          !--------------------------------------------------------------------!
+          !                    Runge Kutta Method Subroutine                   !
+          !--------------------------------------------------------------------!
+            SUBROUTINE RUNGE_KUTTA(FUNC,input_1,input_2,output)
+              USE numerical,                                                    &
+                ONLY : dt
 
               IMPLICIT NONE
-              INTEGER,INTENT(IN) :: it
-              REAL(KIND=8) :: k1, k2, k3, k4
-              print*,particles(it)%X_vel
+              REAL(KIND=8),INTENT(IN) :: input_1, input_2
+              REAL(KIND=8),INTENT(INOUT) :: output
+              REAL(KIND=8) :: FUNC, k1, k2, k3, k4
+
               !----------------------------------------------------------------!
               !                 Calculate x-direction velocity                 !
               !----------------------------------------------------------------!
-              k1 = - (particles(it)%X_vel - interpol_vel(1))/tau_p
-              k2 = - (particles(it)%X_vel+dt*k1/2 - interpol_vel(1))/tau_p
-              k3 = - (particles(it)%X_vel+dt*k2/2 - interpol_vel(1))/tau_p
-              k4 = - (particles(it)%X_vel+dt*k3 - interpol_vel(1))  /tau_p
+              k1 = FUNC(input_1,input_2)
+              k2 = FUNC(input_1 + dt*k1/2,input_2)
+              k3 = FUNC(input_1 + dt*k2/2,input_2)
+              k4 = FUNC(input_1 + dt*k3,input_2)
 
-              particles(it)%X_vel = particles(it)%X_vel                         &
-                                                  + (k1 + 2*k2 + 2*k3 + k4)*dt/6
+              output = output + (k1 + 2*k2 + 2*k3 + k4)*dt/6
 
-              !----------------------------------------------------------------!
-              !                 Calculate y-direction velocity                 !
-              !----------------------------------------------------------------!
-              k1 = - (particles(it)%Y_vel - interpol_vel(2))/tau_p
-              k2 = - (particles(it)%Y_vel+dt*k1/2 - interpol_vel(2))/tau_p
-              k3 = - (particles(it)%Y_vel+dt*k2/2 - interpol_vel(2))/tau_p
-              k4 = - (particles(it)%Y_vel+dt*k3 - interpol_vel(2))  /tau_p
+            END SUBROUTINE RUNGE_KUTTA
+          !--------------------------------------------------------------------!
+          !           Particle velocity & position equation functions          !
+          !--------------------------------------------------------------------!
+            REAL(KIND=8) FUNCTION PAR_VEL(vel,interpol_vel)
+              USE physical
+              IMPLICIT NONE
+              REAL(KIND=8), INTENT(IN) :: vel, interpol_vel
 
-              particles(it)%Y_vel = particles(it)%Y_vel                         &
-                                                  + (k1 + 2*k2 + 2*k3 + k4)*dt/6
+              PAR_VEL = - (vel - interpol_vel)/tau_p
+            END FUNCTION PAR_VEL
 
-              !----------------------------------------------------------------!
-              !                 Calculate z-direction velocity                 !
-              !----------------------------------------------------------------!
-              k1 = - (particles(it)%Z_vel - interpol_vel(3))/tau_p
-              k2 = - (particles(it)%Z_vel+dt*k1/2 - interpol_vel(3))/tau_p
-              k3 = - (particles(it)%Z_vel+dt*k2/2 - interpol_vel(3))/tau_p
-              k4 = - (particles(it)%Z_vel+dt*k3 - interpol_vel(3))  /tau_p
+            REAL(KIND=8) FUNCTION PAR_POS(vel,interpol_vel)
+              USE physical
+              IMPLICIT NONE
+              REAL(KIND=8), INTENT(IN) :: vel, interpol_vel
 
-              particles(it)%Z_vel = particles(it)%Z_vel                         &
-                                                  + (k1 + 2*k2 + 2*k3 + k4)*dt/6
-            END SUBROUTINE RUNGE_KUTTA_VEL
+              PAR_POS= vel
+            END FUNCTION PAR_POS
 
         END MODULE particle
 
