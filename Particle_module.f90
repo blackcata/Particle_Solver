@@ -80,11 +80,17 @@
               REAL(KIND=8) :: x_dis_f,x_dis_b, y_dis_d,y_dis_u, z_dis_l,z_dis_r,&
                               y_tmp_d, y_tmp_u, u_loc(1:8), u_tmp(1:6)
 
+              !----------------------------------------------------------------!
+              !                Find nearest index of velocities                !
+              !----------------------------------------------------------------!
               index_x = INT(particles(it)%X_pos/dx)
               index_z = INT(particles(it)%Z_pos/dz)
               index_y = INT( Ny/2*(1 -                                          &
                          atanh((1-particles(it)%Y_pos)*tanh(gamma))/gamma) + 1 )
 
+              !----------------------------------------------------------------!
+              !           Find the distance between two cell-walls             !
+              !----------------------------------------------------------------!
               x_dis_b = ( particles(it)%X_pos - index_x*dx )/dx
               x_dis_f = ( (index_x+1)*dx - particles(it)%X_pos )/dx
 
@@ -99,6 +105,9 @@
 
               interpol_vel(1:3) = 0.
 
+              !----------------------------------------------------------------!
+              !               Calculate interpolated velocities                !
+              !----------------------------------------------------------------!
               DO t_tmp = 1,3
                 ind = 0
                 DO k = 0,1
@@ -121,9 +130,50 @@
                 interpol_vel(t_tmp) = y_dis_u*u_tmp(5) + y_dis_d*u_tmp(6)
               END DO
 
-              print*, index_y,interpol_vel(1)
-
             END SUBROUTINE VEL_INTERPOLATION
+
+            SUBROUTINE RUNGE_KUTTA_VEL(it)
+              USE physical
+              USE numerical
+
+              IMPLICIT NONE
+              INTEGER,INTENT(IN) :: it
+              REAL(KIND=8) :: k1, k2, k3, k4
+              print*,particles(it)%X_vel
+              !----------------------------------------------------------------!
+              !                 Calculate x-direction velocity                 !
+              !----------------------------------------------------------------!
+              k1 = - (particles(it)%X_vel - interpol_vel(1))/tau_p
+              k2 = - (particles(it)%X_vel+dt*k1/2 - interpol_vel(1))/tau_p
+              k3 = - (particles(it)%X_vel+dt*k2/2 - interpol_vel(1))/tau_p
+              k4 = - (particles(it)%X_vel+dt*k3 - interpol_vel(1))  /tau_p
+
+              particles(it)%X_vel = particles(it)%X_vel                         &
+                                                  + (k1 + 2*k2 + 2*k3 + k4)*dt/6
+
+              !----------------------------------------------------------------!
+              !                 Calculate y-direction velocity                 !
+              !----------------------------------------------------------------!
+              k1 = - (particles(it)%Y_vel - interpol_vel(2))/tau_p
+              k2 = - (particles(it)%Y_vel+dt*k1/2 - interpol_vel(2))/tau_p
+              k3 = - (particles(it)%Y_vel+dt*k2/2 - interpol_vel(2))/tau_p
+              k4 = - (particles(it)%Y_vel+dt*k3 - interpol_vel(2))  /tau_p
+
+              particles(it)%Y_vel = particles(it)%Y_vel                         &
+                                                  + (k1 + 2*k2 + 2*k3 + k4)*dt/6
+
+              !----------------------------------------------------------------!
+              !                 Calculate z-direction velocity                 !
+              !----------------------------------------------------------------!
+              k1 = - (particles(it)%Z_vel - interpol_vel(3))/tau_p
+              k2 = - (particles(it)%Z_vel+dt*k1/2 - interpol_vel(3))/tau_p
+              k3 = - (particles(it)%Z_vel+dt*k2/2 - interpol_vel(3))/tau_p
+              k4 = - (particles(it)%Z_vel+dt*k3 - interpol_vel(3))  /tau_p
+
+              particles(it)%Z_vel = particles(it)%Z_vel                         &
+                                                  + (k1 + 2*k2 + 2*k3 + k4)*dt/6
+            END SUBROUTINE RUNGE_KUTTA_VEL
+
         END MODULE particle
 
         MODULE fileout

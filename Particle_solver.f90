@@ -18,6 +18,7 @@
 
           DO it = 1,N_par
             CALL VEL_INTERPOLATION(it)
+            CALL RUNGE_KUTTA_VEL(it)
           END DO
 
         END SUBROUTINE SOLVER
