@@ -25,8 +25,8 @@
           Lx = 4.*PI
           Lz = 2.*PI
 
-          dx = Lx / (Nx+1)
-          dz = Lz / (Nz+1)
+          dx = Lx / Nx
+          dz = Lz / Nz
           dt = 0.005
 
           N_par  = 100
