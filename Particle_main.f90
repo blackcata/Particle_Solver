@@ -9,13 +9,17 @@
 !------------------------------------------------------------------------------!
 
         PROGRAM Particle_main
+          USE numerical
 
           IMPLICIT NONE
+          INTEGER :: it
 
           CALL SETUP
           CALL READ_DNS
           CALL PARTICLE_SETTING
 
-          CALL SOLVER
-
+          DO it = 1,Nlast
+            CALL SOLVER
+          END DO
+          
         END PROGRAM Particle_main
