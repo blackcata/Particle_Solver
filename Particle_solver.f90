@@ -45,7 +45,8 @@
             CALL RUNGE_KUTTA(PAR_POS,                                           &
                                     particles(it)%Z_vel,TMP,particles(it)%Z_pos)
           END DO
-
+          CALL BOUNDARY_CONDITION
+          
           CALL CPU_TIME(time_end)
           WRITE(*,*) '       PARTICLE TIME INTERATION PROCESS ENDED       '
           WRITE(*,*) '  Total Reading time : ',time_end - time_sta,' s'

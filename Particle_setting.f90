@@ -9,20 +9,15 @@
 !                                                                              !
 !------------------------------------------------------------------------------!
 
-        SUBROUTINE PARTICLE_SETTING
+        SUBROUTINE PARTICLE_SETTING(it)
             USE mesh
             USE particle
 
             IMPLICIT NONE
 
-            INTEGER :: it
+            INTEGER,INTENT(IN) :: it
             REAL(KIND=8) :: X_start, X_end, Y_start, Y_end, Z_start, Z_end,     &
-                            time_sta, time_end, tmp(1:3), Y_tmp
-
-            WRITE(*,*) '----------------------------------------------------'
-            WRITE(*,*) '          PARTICLE SETTING PROCESS STARTED          '
-            CALL CPU_TIME(time_sta)
-
+                            tmp(1:3), Y_tmp
 
             !------------------------------------------------------------------!
             !                  Make & Initialize Result folder                 !
@@ -30,24 +25,14 @@
             X_start = x1(1)  ; Y_start = x2(1)  ; Z_start = x3(1)
             X_end   = x1(Nx) ; Y_end   = x2(Ny) ; Z_end   = x3(Nz)
 
-            CALL RANDOM_SEED
+            particles(it)%par_num = it
 
-            DO it = 1,N_par
-              particles(it)%par_num = it
+            CALL RANDOM_NUMBER(tmp)
+            particles(it)%X_pos = X_start + (X_end-X_start)*tmp(1)
+            particles(it)%Y_pos = Y_start + (Y_end-Y_start)*tmp(2)
+            particles(it)%Z_pos = Z_start + (Z_end-Z_start)*tmp(3)
 
-              CALL RANDOM_NUMBER(tmp)
-              particles(it)%X_pos = X_start + (X_end-X_start)*tmp(1)
-              particles(it)%Y_pos = Y_start + (Y_end-Y_start)*tmp(2)
-              particles(it)%Z_pos = Z_start + (Z_end-Z_start)*tmp(3)
+            Y_tmp               = particles(it)%Y_pos
+            particles(it)%X_vel = Y_tmp * ( x2(Ny)- Y_tmp )
 
-              Y_tmp               = particles(it)%Y_pos
-              particles(it)%X_vel = Y_tmp * ( x2(Ny)- Y_tmp )
-            END DO
-
-            CALL CPU_TIME(time_end)
-
-            WRITE(*,*) '       PARTICLE SETTING PROCESS IS COMPLETED        '
-            WRITE(*,*) '  Total Setting time : ',time_end - time_sta,' s'
-            WRITE(*,*) '----------------------------------------------------'
-            WRITE(*,*) ''
         END SUBROUTINE PARTICLE_SETTING

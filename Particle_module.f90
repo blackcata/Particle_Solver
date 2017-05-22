@@ -10,9 +10,9 @@
 !               N_par  : The number of particles                               !
 !               RK_ord : Order of Runge-Kutta Method                           !
 !               BC     : Boundary condition of particles                       !
+!               Y_eps  : Y distance criteria of boundary distance
 !                                                                              !
 !------------------------------------------------------------------------------!
-
 
         MODULE physical
           IMPLICIT NONE
@@ -59,14 +59,14 @@
 
         MODULE particle
           INTEGER :: N_par, RK_ord, BC
-          REAL(KIND=8) :: interpol_vel(1:3)
+          REAL(KIND=8) :: interpol_vel(1:3), Y_eps
 
           TYPE particle_type
             INTEGER :: par_num                     ! Particles number
             REAL(KIND=8) :: X_pos, Y_pos, Z_pos, & ! Particles position
                             X_vel, Y_vel, Z_vel, & ! Particles velocities
                             age, radius
-                            
+
           END TYPE particle_type
 
           TYPE(particle_type), ALLOCATABLE, DIMENSION(:) :: particles
