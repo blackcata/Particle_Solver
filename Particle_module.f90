@@ -64,7 +64,9 @@
           TYPE particle_type
             INTEGER :: par_num                     ! Particles number
             REAL(KIND=8) :: X_pos, Y_pos, Z_pos, & ! Particles position
-                            X_vel, Y_vel, Z_vel    ! Particles velocities
+                            X_vel, Y_vel, Z_vel, & ! Particles velocities
+                            age, radius
+                            
           END TYPE particle_type
 
           TYPE(particle_type), ALLOCATABLE, DIMENSION(:) :: particles

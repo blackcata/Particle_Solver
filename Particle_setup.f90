@@ -53,5 +53,7 @@
           particles(1:N_par)%X_vel   = 0.
           particles(1:N_par)%Y_vel   = 0.
           particles(1:N_par)%Z_vel   = 0.
+          particles(1:N_par)%age     = 0.
+          particles(1:N_par)%radius  = 1.
 
         END SUBROUTINE SETUP
