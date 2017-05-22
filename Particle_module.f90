@@ -107,6 +107,8 @@
               y_dis_u = ( y_tmp_u - particles(it)%Y_pos )/( y_tmp_u - y_tmp_d )
 
               interpol_vel(1:3) = 0.
+              u_tmp(1:6)        = 0.
+              u_loc(1:8)        = 0.
 
               !----------------------------------------------------------------!
               !               Calculate interpolated velocities                !
