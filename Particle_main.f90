@@ -23,7 +23,7 @@
           END DO
 
           DO it = 1,Nlast
-            CALL SOLVER
+            CALL SOLVER(it)
           END DO
 
         END PROGRAM Particle_main

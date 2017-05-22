@@ -45,6 +45,7 @@
           REAL(KIND=8) :: IDtopt, CFL_std, CFL_max
           REAL(KIND=8) :: Re
           REAL(KIND=8) :: Fr                        ! Add by K.Noh 2017
+          REAL(KIND=8) :: Total_time                ! Add by K.Noh 2017
           REAL(KIND=8) :: divU_max
         END MODULE numerical
 

@@ -8,49 +8,62 @@
 !                                                                              !
 !------------------------------------------------------------------------------!
 
-        SUBROUTINE SOLVER
+        SUBROUTINE SOLVER(it)
           USE particle
           USE numerical
 
           IMPLICIT NONE
 
-          INTEGER :: it
+          INTEGER,INTENT(IN) :: it
+          INTEGER :: itp
           REAL(KIND=8) :: TMP, time_sta, time_end
 
           TMP = 0.0
+          IF (it == 1) THEN
+            WRITE(*,*) '----------------------------------------------------'
+            WRITE(*,*) '       PARTICLE TIME ITERATION PROCESS STARTED      '
+            WRITE(*,*) ''
+          END IF
 
-          WRITE(*,*) '----------------------------------------------------'
-          WRITE(*,*) '      PARTICLE TIME INTERATION PROCESS STARTED      '
           CALL CPU_TIME(time_sta)
 
-          DO it = 1,N_par
-            CALL VEL_INTERPOLATION(it)
+          DO itp = 1,N_par
+            CALL VEL_INTERPOLATION(itp)
             !------------------------------------------------------------------!
             !                   Calculate particles velocities                 !
             !------------------------------------------------------------------!
             CALL RUNGE_KUTTA(PAR_VEL,                                           &
-                        particles(it)%X_vel,interpol_vel(1),particles(it)%X_vel)
+                        particles(itp)%X_vel,interpol_vel(1),particles(itp)%X_vel)
             CALL RUNGE_KUTTA(PAR_VEL,                                        &
-                        particles(it)%Y_vel,interpol_vel(2),particles(it)%Y_vel)
+                        particles(itp)%Y_vel,interpol_vel(2),particles(itp)%Y_vel)
             CALL RUNGE_KUTTA(PAR_VEL,                                        &
-                        particles(it)%Z_vel,interpol_vel(3),particles(it)%Z_vel)
+                        particles(itp)%Z_vel,interpol_vel(3),particles(itp)%Z_vel)
 
             !------------------------------------------------------------------!
             !                  Calculate particles positions                   !
             !------------------------------------------------------------------!
             CALL RUNGE_KUTTA(PAR_POS,                                           &
-                                    particles(it)%X_vel,TMP,particles(it)%X_pos)
+                                    particles(itp)%X_vel,TMP,particles(itp)%X_pos)
             CALL RUNGE_KUTTA(PAR_POS,                                           &
-                                    particles(it)%Y_vel,TMP,particles(it)%Y_pos)
+                                    particles(itp)%Y_vel,TMP,particles(itp)%Y_pos)
             CALL RUNGE_KUTTA(PAR_POS,                                           &
-                                    particles(it)%Z_vel,TMP,particles(it)%Z_pos)
+                                    particles(itp)%Z_vel,TMP,particles(itp)%Z_pos)
           END DO
+
           CALL BOUNDARY_CONDITION
-          
+
           CALL CPU_TIME(time_end)
-          WRITE(*,*) '       PARTICLE TIME INTERATION PROCESS ENDED       '
-          WRITE(*,*) '  Total Reading time : ',time_end - time_sta,' s'
-          WRITE(*,*) '----------------------------------------------------'
-          WRITE(*,*) ''
+
+          WRITE(*,"(A,1X,I6,2X,A,F10.6,A)")                                     &
+                  'Particle iteration for',it,'time : ',time_end - time_sta,' s'
+          Total_time = Total_time + (time_end - time_sta)
+
+          IF (it == Nlast) THEN
+            WRITE(*,*) ''
+            WRITE(*,*) '        PARTICLE TIME ITERATION PROCESS ENDED       '
+            WRITE(*,*) '  Total Iteration time : ',Total_time,' s'
+            WRITE(*,*) '----------------------------------------------------'
+            WRITE(*,*) ''
+          END IF
 
         END SUBROUTINE SOLVER
