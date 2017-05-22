@@ -24,6 +24,7 @@
 
           DO it = 1,Nlast
             CALL SOLVER(it)
+            CALL OUTPUT(it)
           END DO
 
         END PROGRAM Particle_main
