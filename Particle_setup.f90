@@ -17,7 +17,8 @@
           USE fileout
 
           IMPLICIT NONE
-
+          INTEGER :: it
+          
           !--------------------------------------------------------------------!
           !                   Make & Initialize Result folder                  !
           !--------------------------------------------------------------------!
@@ -69,5 +70,10 @@
           particles(1:N_par)%Z_vel   = 0.
           particles(1:N_par)%age     = 0.
           particles(1:N_par)%radius  = 1.
+
+
+          DO it = 1,N_par
+            CALL PARTICLE_SETTING(it)
+          END DO
 
         END SUBROUTINE SETUP

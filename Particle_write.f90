@@ -19,7 +19,7 @@
 
               dirname = 'RESULT'
               !----------------------------------------------------------------!
-              !                       Outputs for U Slice                      !
+              !               Outputs for particle informations                !
               !----------------------------------------------------------------!
               filename = '/Particle_vel.plt'
               pathname = TRIM(dirname)//TRIM(filename)

@@ -18,10 +18,6 @@
           CALL SETUP
           CALL READ_DNS
 
-          DO it = 1,N_par
-            CALL PARTICLE_SETTING(it)
-          END DO
-
           DO it = 1,Nlast
             CALL SOLVER(it)
             CALL OUTPUT(it)
