@@ -33,6 +33,8 @@
             particles(it)%Z_pos = Z_start + (Z_end-Z_start)*tmp(3)
 
             Y_tmp               = particles(it)%Y_pos
-            particles(it)%X_vel = Y_tmp * ( x2(Ny)- Y_tmp )
+            particles(it)%X_vel        = Y_tmp * ( x2(Ny)- Y_tmp )
+            particles(1:N_par)%Y_vel   = 0.
+            particles(1:N_par)%Z_vel   = 0.
 
         END SUBROUTINE PARTICLE_SETTING

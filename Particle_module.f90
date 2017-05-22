@@ -174,6 +174,14 @@
               PAR_VEL = - (vel - interpol_vel)/tau_p
             END FUNCTION PAR_VEL
 
+            REAL(KIND=8) FUNCTION PAR_VEL_Y(vel,interpol_vel)
+              USE physical
+              IMPLICIT NONE
+              REAL(KIND=8), INTENT(IN) :: vel, interpol_vel
+
+              PAR_VEL_Y = - (vel - interpol_vel)/tau_p - g
+            END FUNCTION PAR_VEL_Y
+
             REAL(KIND=8) FUNCTION PAR_POS(vel,interpol_vel)
               USE physical
               IMPLICIT NONE
