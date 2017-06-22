@@ -166,21 +166,29 @@
           !--------------------------------------------------------------------!
           !           Particle velocity & position equation functions          !
           !--------------------------------------------------------------------!
-            REAL(KIND=8) FUNCTION PAR_VEL(vel,interpol_vel)
+            REAL(KIND=8) FUNCTION PAR_VEL_X(vel,interpol_vel)
               USE physical
               IMPLICIT NONE
               REAL(KIND=8), INTENT(IN) :: vel, interpol_vel
 
-              PAR_VEL = - (vel - interpol_vel)/tau_p
-            END FUNCTION PAR_VEL
+              PAR_VEL_X = - (vel - interpol_vel)/tau_p
+            END FUNCTION PAR_VEL_X
 
             REAL(KIND=8) FUNCTION PAR_VEL_Y(vel,interpol_vel)
               USE physical
               IMPLICIT NONE
               REAL(KIND=8), INTENT(IN) :: vel, interpol_vel
 
-              PAR_VEL_Y = - (vel - interpol_vel)/tau_p - g
+              PAR_VEL_Y = - (vel - interpol_vel)/tau_p - g/10
             END FUNCTION PAR_VEL_Y
+
+            REAL(KIND=8) FUNCTION PAR_VEL_Z(vel,interpol_vel)
+              USE physical
+              IMPLICIT NONE
+              REAL(KIND=8), INTENT(IN) :: vel, interpol_vel
+
+              PAR_VEL_Z = - (vel - interpol_vel)/tau_p
+            END FUNCTION PAR_VEL_Z
 
             REAL(KIND=8) FUNCTION PAR_POS(vel,interpol_vel)
               USE physical

@@ -17,7 +17,7 @@
 
             INTEGER,INTENT(IN) :: it
             REAL(KIND=8) :: X_start, X_end, Y_start, Y_end, Z_start, Z_end,     &
-                            tmp(1:3), Y_tmp
+                            tmp(1:3)
 
             !------------------------------------------------------------------!
             !                  Make & Initialize Result folder                 !
@@ -32,9 +32,9 @@
             particles(it)%Y_pos = Y_start + (Y_end-Y_start)*tmp(2)
             particles(it)%Z_pos = Z_start + (Z_end-Z_start)*tmp(3)
 
-            Y_tmp               = particles(it)%Y_pos
-            particles(it)%X_vel        = Y_tmp * ( x2(Ny)- Y_tmp )
-            particles(1:N_par)%Y_vel   = 0.
-            particles(1:N_par)%Z_vel   = 0.
+            CALL VEL_INTERPOLATION(it)
+            particles(it)%X_vel   = interpol_vel(1)
+            particles(it)%Y_vel   = interpol_vel(2)
+            particles(it)%Z_vel   = interpol_vel(3)
 
         END SUBROUTINE PARTICLE_SETTING

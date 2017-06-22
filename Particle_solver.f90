@@ -32,11 +32,11 @@
             !------------------------------------------------------------------!
             !                   Calculate particles velocities                 !
             !------------------------------------------------------------------!
-            CALL RUNGE_KUTTA(PAR_VEL,                                           &
+            CALL RUNGE_KUTTA(PAR_VEL_X,                                           &
                         particles(itp)%X_vel,interpol_vel(1),particles(itp)%X_vel)
             CALL RUNGE_KUTTA(PAR_VEL_Y,                                         &
                         particles(itp)%Y_vel,interpol_vel(2),particles(itp)%Y_vel)
-            CALL RUNGE_KUTTA(PAR_VEL,                                           &
+            CALL RUNGE_KUTTA(PAR_VEL_Z,                                           &
                         particles(itp)%Z_vel,interpol_vel(3),particles(itp)%Z_vel)
 
             !------------------------------------------------------------------!

@@ -4,6 +4,12 @@
 !                                                                              !
 !   PURPOSE : To simulate particles motions in the fluid                       !
 !                                                                              !
+!   p.s   1 : There is assumption that U arrays are allocated to               !
+!             collocated grid instead of staggered grid.                       !
+!         2 : You can change or put additional forces                          !
+!             by changing PAR_VEL functions at particle Module.                !
+!                                                                              !
+!                                                                              !                                                         !
 !                                                             2017.05.16 K.Noh !
 !                                                                              !
 !------------------------------------------------------------------------------!
